@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+encoding//src/DataFixtures/ArticleFixtures.php=UTF-8
+encoding//templates/blog/create.html.twig=UTF-8
+encoding//templates/blog/home.html.twig=UTF-8
+encoding//templates/blog/index.html.twig=UTF-8
+encoding//templates/blog/show.html.twig=UTF-8

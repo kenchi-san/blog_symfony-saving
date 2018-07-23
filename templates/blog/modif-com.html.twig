@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+{% form_theme formComment 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+
+<h1>{% if editcom %}
+Super page de modification des commentaires:
+{% else %}
+Super page de nouveau commentaires:
+
+{%  endif %}</h1>
+{{ form_start(formComment) }}
+
+{{ form_row(formComment.author,{'attr':{'placeholder':"votre pseudo"}}) }}
+{{ form_row(formComment.content,{'attr':{'placeholder':"Contenu du commentaire"}}) }}
+<button type="submit" class="btn btn-success">
+{% if editcom %}
+Enregistrer les modifications:
+{% else %}
+Ajouter le nouveau commentaire:
+{% endif %}
+</button>
+{{ form_end(formComment) }}
+{% endblock %}
