@@ -13,7 +13,6 @@ use Symfony\Component\Validator\Constraints\NotNull;
 use App\Form\ArticleType;
 use App\Entity\Comment;
 use App\Form\CommentType;
-use Doctrine\Common\Persistence\PersistentObject;
 
 class BlogController extends Controller
 {
@@ -40,6 +39,41 @@ class BlogController extends Controller
     public function home()
     {
         return $this->render('blog/home.html.twig');
+    }
+
+    /**
+     *
+     * @Route("/blog/new/Com", name="comment_create")
+     * @Route("/blog/{id}/edit/com", name="comment-edit")
+     * @param Comment $comment
+     * @param Request $request
+     * @param ObjectManager $manager
+     */
+    public function formCom(Article $article = null, Comment $comment = null, Request $request, ObjectManager $manager)
+    {
+        if (! $comment) {
+            $comment = new Comment();
+        }
+        
+        $formCom = $this->createForm(CommentType::class, $comment);
+        
+        /*
+         * $form->handleRequest($request);
+         * if($form->isSubmitted() && $form->isValid()){
+         * if (!$comment->getId()){
+         * $comment->setCreatedAt(new \DateTime())
+         * ;
+         * }
+         * //dump($article);
+         * $manager->persist($comment);
+         * $manager->flush();
+         * return $this->redirectToRoute('blog_show',['id' => $comment->getId()]);
+         * }
+         */
+        return $this->render('blog/modif-com.html.twig', [
+            'formComment' => $formCom->createView(),
+            'editcom' => $comment->getId() !== null
+        ]);
     }
 
     /**
@@ -78,27 +112,10 @@ class BlogController extends Controller
      * @Route("/blog/{id}", name="blog_show")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function show(Article $article, Request $request, ObjectManager $manager)
+    public function show(Article $article)
     {
-        $comment = new Comment();
-        $form =$this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request);
-        
-        
-        
-        if ($form->isSubmitted() && $form->isValid()){
-            $comment->setCreatedAt(new \DateTime())
-            ->setArticle($article);
-            
-            $manager->persist($comment);
-            $manager->flush();
-            
-            return $this->redirectToRoute('blog_show',['id'=>$article->getId() ] );
-        }
-        
         return $this->render('blog/show.html.twig', [
-            'article' => $article,
-            'commentForm'=>$form->createView()
+            'article' => $article
         
         ]);
     }

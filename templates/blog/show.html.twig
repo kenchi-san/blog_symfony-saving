@@ -18,7 +18,7 @@
 	
 </article>
 <section id="commentaire">
-
+<a href="{{ path('comment_create',{'id':comment.id})}}" class="btn btn-primary">nouveau commentaire:</a>
 
 	<h2>Liste des commentaires:</h2>
 	{% for comment in article.comments %}
@@ -31,15 +31,11 @@
 			</div>
 			<div class="col">
 				{{ comment.content | raw }}
+<a href="{{ path('comment-edit',{'id':comment.id}) }}" class="btn btn-primary">Modifier le commentaire</a>
 			</div>
 		</div>
 	</div>
 	{% endfor %}
-	{{ form_start(commentForm) }}
-	{{ form_row(commentForm.author,{'attr':{'placeholder':"Votre nom"}})}}
-	{{ form_row(commentForm.content, {'attr':{'placeholder':"commentaire"}}) }}
-	<button tupe="submit" class="btn btn-success">commenter</button>
-	{{ form_end(commentForm) }}
 </section>
 
 {% endblock %}
