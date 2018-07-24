@@ -43,41 +43,6 @@ class BlogController extends Controller
 
     /**
      *
-     * @Route("/blog/new/Com", name="comment_create")
-     * @Route("/blog/{id}/edit/com", name="comment-edit")
-     * @param Comment $comment
-     * @param Request $request
-     * @param ObjectManager $manager
-     */
-    public function formCom(Article $article = null, Comment $comment = null, Request $request, ObjectManager $manager)
-    {
-        if (! $comment) {
-            $comment = new Comment();
-        }
-        
-        $formCom = $this->createForm(CommentType::class, $comment);
-        
-        /*
-         * $form->handleRequest($request);
-         * if($form->isSubmitted() && $form->isValid()){
-         * if (!$comment->getId()){
-         * $comment->setCreatedAt(new \DateTime())
-         * ;
-         * }
-         * //dump($article);
-         * $manager->persist($comment);
-         * $manager->flush();
-         * return $this->redirectToRoute('blog_show',['id' => $comment->getId()]);
-         * }
-         */
-        return $this->render('blog/modif-com.html.twig', [
-            'formComment' => $formCom->createView(),
-            'editcom' => $comment->getId() !== null
-        ]);
-    }
-
-    /**
-     *
      * @Route("/blog/new", name="blog_create")
      * @Route("/blog/{id}/edit", name="blog-edit")
      */
@@ -112,10 +77,25 @@ class BlogController extends Controller
      * @Route("/blog/{id}", name="blog_show")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function show(Article $article)
+    public function show(Article $article, Comment $comment, Request $request, ObjectManager $manager)
     {
+        $comment = new Comment();
+        
+        $form = $this->createForm(CommentType::class, $comment);
+        
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setCreatedAt(new \datetime())->setArticle($article);
+            
+            $manager->persist($comment);
+            $manager->flush();
+            
+            return $this->redirectToRoute('blog_show',['id' =>$article->getId()]);
+        }
+        
         return $this->render('blog/show.html.twig', [
-            'article' => $article
+            'article' => $article,
+            'comform' => $form->createView()
         
         ]);
     }

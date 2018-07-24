@@ -14,11 +14,10 @@
 	</div>
 	<img alt="" src="{{ article.image }}">
 	{{ article.content | raw }}
-	<a href="{{ path('blog-edit',{'id':article.id}) }}" class="btn btn-primary">Modifier l'article</a>
+	<a href="{{ path('blog-edit',{'id':article.id})}}" class="btn btn-primary">Modifier l'article:</a>
 	
 </article>
 <section id="commentaire">
-<a href="{{ path('comment_create',{'id':comment.id})}}" class="btn btn-primary">nouveau commentaire:</a>
 
 	<h2>Liste des commentaires:</h2>
 	{% for comment in article.comments %}
@@ -31,11 +30,18 @@
 			</div>
 			<div class="col">
 				{{ comment.content | raw }}
-<a href="{{ path('comment-edit',{'id':comment.id}) }}" class="btn btn-primary">Modifier le commentaire</a>
 			</div>
 		</div>
+		
 	</div>
+	
 	{% endfor %}
+	{{ form_start(comform) }}
+
+{{ form_row(comform.author,{'attr':{'placeholder':"titre de l'article"}}) }}
+{{ form_row(comform.content,{'attr':{'placeholder':"Contenu de l'article"}}) }}
+<button type="submit" class="btn btn-success">nouveau commentaire:</button>
 </section>
+{{ form_end(comform) }}
 
 {% endblock %}

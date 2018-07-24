@@ -25,7 +25,7 @@ Run your application:
   * Write test cases in the tests/ folder
   * Run php bin/phpunit
 
-
+php bin/console cache:clear --no-warmup -e prod
 
 etape et commandes git:
 -> composer require server --dev (librairie pour dev)
